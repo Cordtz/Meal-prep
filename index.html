@@ -280,6 +280,25 @@ nav.tabs a{font-size:.7rem}
 .hcard{padding-right:18px}
 .miss{color:var(--beef);font-weight:600}
 .sm-btn{padding:7px 12px;font-size:.85rem;z-index:1}
+
+.exrow{display:flex;gap:8px;flex-wrap:wrap}
+.copybox{position:fixed;inset:0;z-index:70;background:rgba(0,0,0,.45);display:grid;place-items:center;padding:16px}
+.cb-card{background:var(--surface);border-radius:var(--r);padding:14px;width:min(560px,100%);display:grid;gap:10px}
+.cb-card textarea{width:100%;min-height:50vh;border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:.9rem;background:var(--bg);color:var(--ink)}
+.cooklist{display:grid;gap:8px}
+.ckr{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:10px 14px}
+.ckr summary{display:flex;gap:10px;align-items:center;cursor:pointer;list-style:none}
+.ckr summary::-webkit-details-marker{display:none}
+.ckr summary::after{content:"›";margin-left:auto;font-size:1.3rem;color:var(--muted);transition:transform .15s}
+.ckr[open] summary::after{transform:rotate(90deg)}
+.ckr summary i{width:10px;height:28px;border-radius:4px;flex:none}
+.ckr summary b{display:block;font-weight:600;line-height:1.25}
+.ckr summary small{display:block;color:var(--muted)}
+.ckr .ing{margin:8px 0}
+.tl-rec{display:block;border:0;background:none;padding:0;font-weight:600;font-size:.92rem;color:var(--ink);text-align:left;text-decoration:underline;text-decoration-color:var(--line);text-underline-offset:3px}
+.legend .lg{border:0;background:none;padding:0;color:var(--muted);font-size:.8rem;display:inline-flex;align-items:center;gap:6px;text-align:left}
+ol.tl p.amts{color:var(--ink);background:var(--accent-soft);border-radius:8px;padding:6px 8px;margin-top:6px;font-size:.86rem}
+ol.tl p.amts b{color:var(--accent)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
 </style>
 </head>
@@ -297,6 +316,7 @@ nav.tabs a{font-size:.7rem}
         <button class="btn" id="filterBtn" aria-expanded="false" aria-controls="filters">Filters <span class="badge" id="fcount" hidden>0</span></button>
       </div>
       <div class="chips scroll" id="smChips" role="group" aria-label="Smoothie flavour" hidden></div>
+      <div class="chips scroll" id="smpChips" role="group" aria-label="Smoothie protein source" hidden></div>
       <div class="chips scroll" id="mealChips" role="group" aria-label="Meal"></div>
       <div class="chips scroll" id="minceChips" role="group" aria-label="Protein"></div>
       <div class="filters" id="filters" hidden>
@@ -330,6 +350,7 @@ nav.tabs a{font-size:.7rem}
 <div class="sheet" id="picker" hidden role="dialog" aria-modal="true" aria-labelledby="pickTitle"><div class="wrap" id="pickBody"></div></div>
 <div class="cook" id="cook" hidden role="dialog" aria-modal="true" aria-label="Cooking mode"><div class="wrap" id="cookBody"></div></div>
 <div class="tray" id="tray" hidden aria-live="polite"></div>
+<div class="copybox" id="copybox" hidden></div>
 
 <nav class="tabs" aria-label="Main">
   <div class="inner">
@@ -816,6 +837,59 @@ R.push(
 {"id": 241, "n": "Air fryer black bean and quinoa burgers", "pr": "Vegetarian", "cu": "Comfort", "b": "Bread & wraps", "t": 40, "fz": 1, "k": 495, "p": 30, "c": 63, "f": 12, "ap": ["Air fryer", "Thermomix"], "i": [[1.5, "tin", "black beans", "T"], [100, "g", "quinoa", "T"], [150, "g", "frozen shelled edamame", "F"], [2, "", "eggs", "D"], [1, "tsp", "ground cumin", "T"], [4, "", "wholemeal burger buns", "B"], [4, "slices", "light cheese slices", "D"], [1, "", "cos lettuce", "P"], [1, "", "tomatoes", "P"]], "s": ["Cook quinoa and cool.", "Pulse beans, edamame, egg and cumin 5 sec/speed 5; mix in quinoa. Shape 4 patties and chill 20 minutes.", "Spray and air fry 190°C for 14 minutes, turning halfway; add cheese for the last minute.", "Build burgers with lettuce and tomato."]},
 {"id": 242, "n": "Spinach and cottage cheese filo pie", "pr": "Vegetarian", "cu": "Mediterranean", "b": "Other", "t": 50, "fz": 1, "k": 435, "p": 37, "c": 41, "f": 14, "ap": [], "i": [[10, "sheets", "filo pastry", "D"], [500, "g", "baby spinach", "P"], [400, "g", "light cottage cheese", "D"], [120, "g", "light feta", "D"], [4, "", "eggs", "D"], [1, "", "onion", "P"], [1, "bunch", "dill", "P"], [200, "g", "0% Greek yoghurt", "D"], [1, "", "Lebanese cucumber", "P"], [250, "g", "cherry tomatoes", "P"], [null, "", "oil spray", "T"]], "s": ["Wilt spinach with onion; squeeze dry. Mix with cottage cheese, feta, eggs and dill.", "Layer 5 sprayed filo sheets in a dish, add filling, top with 5 more sheets; spray.", "Bake at 180°C for 35 minutes until golden.", "Serve with yoghurt and cucumber-tomato salad."]}
 );
+/* ---- 50 smoothies without protein powder (ids 243–292) ---- */
+R.push(
+{"id": 243, "n": "Berry cottage cheesecake", "pr": "Smoothie", "fl": ["Berry", "Dessert", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 305, "p": 30, "c": 36, "f": 4, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [200, "g", "light cottage cheese", "D"], [1, "cup", "frozen mixed berries", "F"], [1, "tsp", "honey", "T"], [0.5, "biscuits", "Weet-Bix", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 244, "n": "Strawberry Greek yoghurt", "pr": "Smoothie", "fl": ["Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 255, "p": 30, "c": 32, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [1, "cup", "frozen strawberries", "F"], [1, "tsp", "honey", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 245, "n": "Blueberry vanilla yoghurt", "pr": "Smoothie", "fl": ["Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 270, "p": 30, "c": 37, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [0.75, "cup", "frozen blueberries", "F"], [1, "tsp", "vanilla essence", "T"], [1, "tsp", "honey", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 246, "n": "Raspberry ricotta", "pr": "Smoothie", "fl": ["Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 350, "p": 25, "c": 38, "f": 12, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light ricotta", "D"], [1, "cup", "frozen raspberries", "F"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 247, "n": "Mixed berry oat yoghurt", "pr": "Smoothie", "fl": ["Berry", "Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 340, "p": 32, "c": 44, "f": 3, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "cup", "frozen mixed berries", "F"], [20, "g", "rolled oats", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 248, "n": "Cherry almond yoghurt", "pr": "Smoothie", "fl": ["Berry", "Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 360, "p": 32, "c": 46, "f": 6, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "cup", "frozen cherries", "F"], [10, "g", "almonds", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 249, "n": "Strawberry shortcake", "pr": "Smoothie", "fl": ["Berry", "Dessert", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 305, "p": 30, "c": 40, "f": 3, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "cup", "frozen strawberries", "F"], [1, "biscuits", "Weet-Bix", "T"], [1, "tsp", "vanilla essence", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 250, "n": "Triple berry chia", "pr": "Smoothie", "fl": ["Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 295, "p": 27, "c": 32, "f": 5, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "0% Greek yoghurt", "D"], [1, "cup", "frozen mixed berries", "F"], [1, "tbsp", "chia seeds", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 251, "n": "Choc banana yoghurt", "pr": "Smoothie", "fl": ["Chocolate", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 285, "p": 30, "c": 39, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [0.5, "", "banana", "P"], [1, "tbsp", "cocoa powder", "T"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 252, "n": "Choc peanut butter cottage", "pr": "Smoothie", "fl": ["Chocolate", "Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 360, "p": 32, "c": 35, "f": 11, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "tbsp", "peanut butter", "T"], [1, "tbsp", "cocoa powder", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 253, "n": "Choc cherry ricotta", "pr": "Smoothie", "fl": ["Chocolate", "Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 375, "p": 26, "c": 44, "f": 12, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light ricotta", "D"], [1, "cup", "frozen cherries", "F"], [1, "tbsp", "cocoa powder", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 254, "n": "Choc mint yoghurt", "pr": "Smoothie", "fl": ["Chocolate", "Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 275, "p": 31, "c": 36, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [30, "g", "baby spinach", "P"], [1, "tbsp", "cocoa powder", "T"], [0.5, "", "banana", "P"], [0.1, "bunch", "mint", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 255, "n": "Choc avocado silken tofu", "pr": "Smoothie", "fl": ["Chocolate", "No powder", "Dairy-free"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 365, "p": 27, "c": 17, "f": 20, "ap": ["Thermomix"], "i": [[1, "cup", "unsweetened soy milk", "T"], [350, "g", "silken tofu", "D"], [1, "tbsp", "cocoa powder", "T"], [0.25, "", "avocado", "P"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 256, "n": "Milo malt yoghurt", "pr": "Smoothie", "fl": ["Chocolate", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 295, "p": 30, "c": 40, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tbsp", "Milo", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 257, "n": "Choc date yoghurt", "pr": "Smoothie", "fl": ["Chocolate", "Dessert", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 280, "p": 30, "c": 39, "f": 1, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tbsp", "cocoa powder", "T"], [1, "", "medjool dates", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 258, "n": "Iced coffee cottage", "pr": "Smoothie", "fl": ["Coffee", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 220, "p": 27, "c": 22, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "tsp", "instant coffee", "T"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 259, "n": "Mocha yoghurt", "pr": "Smoothie", "fl": ["Coffee", "Chocolate", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 270, "p": 30, "c": 35, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tsp", "instant coffee", "T"], [1, "tbsp", "cocoa powder", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 260, "n": "Coffee banana oat", "pr": "Smoothie", "fl": ["Coffee", "Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 305, "p": 27, "c": 44, "f": 2, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "0% Greek yoghurt", "D"], [1, "tsp", "instant coffee", "T"], [0.5, "", "banana", "P"], [20, "g", "rolled oats", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 261, "n": "Caramel latte yoghurt", "pr": "Smoothie", "fl": ["Coffee", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 270, "p": 29, "c": 38, "f": 1, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tsp", "instant coffee", "T"], [1, "", "medjool dates", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 262, "n": "Espresso peanut butter yoghurt", "pr": "Smoothie", "fl": ["Coffee", "Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 270, "p": 28, "c": 21, "f": 9, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "0% Greek yoghurt", "D"], [1, "tsp", "instant coffee", "T"], [1, "tbsp", "peanut butter", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 263, "n": "Mango yoghurt", "pr": "Smoothie", "fl": ["Tropical", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 260, "p": 30, "c": 33, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [120, "g", "frozen mango", "F"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 264, "n": "Pineapple coconut yoghurt", "pr": "Smoothie", "fl": ["Tropical", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 300, "p": 31, "c": 37, "f": 4, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [1, "cup", "frozen pineapple", "F"], [1, "tbsp", "desiccated coconut", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 265, "n": "Passionfruit mango cottage", "pr": "Smoothie", "fl": ["Tropical", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 290, "p": 30, "c": 36, "f": 4, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [200, "g", "light cottage cheese", "D"], [100, "g", "frozen mango", "F"], [2, "", "passionfruit", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 266, "n": "Peach raspberry yoghurt", "pr": "Smoothie", "fl": ["Tropical", "Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 265, "p": 31, "c": 34, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [0.75, "cup", "frozen peaches", "F"], [0.5, "cup", "frozen raspberries", "F"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 267, "n": "Tropical green yoghurt", "pr": "Smoothie", "fl": ["Tropical", "Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 265, "p": 31, "c": 35, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [50, "g", "frozen mango", "F"], [0.5, "cup", "frozen pineapple", "F"], [30, "g", "baby spinach", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 268, "n": "Banana coconut silken tofu", "pr": "Smoothie", "fl": ["Tropical", "No powder", "Dairy-free"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 415, "p": 27, "c": 36, "f": 18, "ap": ["Thermomix"], "i": [[1, "cup", "unsweetened soy milk", "T"], [350, "g", "silken tofu", "D"], [1, "", "banana", "P"], [1, "tbsp", "desiccated coconut", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 269, "n": "Green kiwi yoghurt", "pr": "Smoothie", "fl": ["Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 295, "p": 32, "c": 41, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [40, "g", "baby spinach", "P"], [0.5, "", "banana", "P"], [1, "", "kiwi fruit", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 270, "n": "Apple spinach cottage", "pr": "Smoothie", "fl": ["Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 300, "p": 30, "c": 39, "f": 4, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [200, "g", "light cottage cheese", "D"], [1, "", "apple", "P"], [30, "g", "baby spinach", "P"], [0.5, "tbsp", "grated ginger", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 271, "n": "Matcha yoghurt", "pr": "Smoothie", "fl": ["Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 280, "p": 30, "c": 40, "f": 1, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tsp", "matcha powder", "T"], [0.5, "", "banana", "P"], [1, "tsp", "honey", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 272, "n": "Kiwi lime yoghurt", "pr": "Smoothie", "fl": ["Green", "Citrus", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 280, "p": 31, "c": 37, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [2, "", "kiwi fruit", "P"], [0.5, "", "lime", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 273, "n": "Avocado lime green", "pr": "Smoothie", "fl": ["Green", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 290, "p": 30, "c": 30, "f": 6, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [0.25, "", "avocado", "P"], [30, "g", "baby spinach", "P"], [0.5, "", "lime", "P"], [1, "tsp", "honey", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 274, "n": "Peanut butter banana yoghurt", "pr": "Smoothie", "fl": ["Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 350, "p": 33, "c": 37, "f": 9, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tbsp", "peanut butter", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 275, "n": "Almond butter date yoghurt", "pr": "Smoothie", "fl": ["Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 365, "p": 33, "c": 41, "f": 10, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tbsp", "almond butter", "T"], [1, "", "medjool dates", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 276, "n": "PB and jelly cottage", "pr": "Smoothie", "fl": ["Nutty", "Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 300, "p": 27, "c": 25, "f": 11, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "tbsp", "peanut butter", "T"], [1, "cup", "frozen strawberries", "F"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 277, "n": "Vanilla cashew yoghurt", "pr": "Smoothie", "fl": ["Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 300, "p": 31, "c": 29, "f": 7, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [15, "g", "cashews", "T"], [1, "tsp", "maple syrup", "T"], [1, "tsp", "vanilla essence", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 278, "n": "Tahini date yoghurt", "pr": "Smoothie", "fl": ["Nutty", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 355, "p": 32, "c": 41, "f": 9, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [1, "tbsp", "tahini", "T"], [1, "", "medjool dates", "P"], [0.5, "tsp", "cinnamon", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 279, "n": "Peanut butter oat silken tofu", "pr": "Smoothie", "fl": ["Nutty", "Breakfast", "No powder", "Dairy-free"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 430, "p": 28, "c": 33, "f": 21, "ap": ["Thermomix"], "i": [[0.75, "cup", "unsweetened soy milk", "T"], [300, "g", "silken tofu", "D"], [1, "tbsp", "peanut butter", "T"], [15, "g", "rolled oats", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 280, "n": "Weet-Bix banana yoghurt", "pr": "Smoothie", "fl": ["Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 375, "p": 33, "c": 56, "f": 1, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [2, "biscuits", "Weet-Bix", "T"], [0.5, "", "banana", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 281, "n": "Overnight oats yoghurt", "pr": "Smoothie", "fl": ["Breakfast", "Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 405, "p": 35, "c": 45, "f": 7, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [30, "g", "rolled oats", "T"], [0.5, "cup", "frozen mixed berries", "F"], [1, "tbsp", "chia seeds", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 282, "n": "Banana bread yoghurt", "pr": "Smoothie", "fl": ["Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 420, "p": 29, "c": 58, "f": 9, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "0% Greek yoghurt", "D"], [1, "", "banana", "P"], [20, "g", "rolled oats", "T"], [10, "g", "walnuts", "T"], [0.5, "tsp", "cinnamon", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 283, "n": "Apple cinnamon oat cottage", "pr": "Smoothie", "fl": ["Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 370, "p": 30, "c": 54, "f": 4, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "", "apple", "P"], [20, "g", "rolled oats", "T"], [0.5, "tsp", "cinnamon", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 284, "n": "Chai banana cottage", "pr": "Smoothie", "fl": ["Breakfast", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 255, "p": 27, "c": 31, "f": 3, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [0.5, "", "banana", "P"], [1, "tsp", "cinnamon", "T"], [0.5, "tbsp", "grated ginger", "P"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 285, "n": "Vanilla cottage milkshake", "pr": "Smoothie", "fl": ["Dessert", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 255, "p": 33, "c": 23, "f": 3, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "light cottage cheese", "D"], [1, "tsp", "vanilla essence", "T"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 286, "n": "Lemon cheesecake", "pr": "Smoothie", "fl": ["Dessert", "Citrus", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 265, "p": 28, "c": 24, "f": 6, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [50, "g", "light ricotta", "D"], [0.5, "", "lemon", "P"], [1, "tsp", "honey", "T"], [0.5, "biscuits", "Weet-Bix", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 287, "n": "Carrot cake yoghurt", "pr": "Smoothie", "fl": ["Dessert", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 345, "p": 31, "c": 41, "f": 7, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [200, "g", "0% Greek yoghurt", "D"], [0.5, "", "carrot", "P"], [1, "", "medjool dates", "P"], [10, "g", "walnuts", "T"], [0.5, "tsp", "cinnamon", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 288, "n": "Tiramisu ricotta", "pr": "Smoothie", "fl": ["Dessert", "Coffee", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 315, "p": 26, "c": 25, "f": 12, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [170, "g", "light ricotta", "D"], [1, "tsp", "instant coffee", "T"], [0.5, "tbsp", "cocoa powder", "T"], [1, "tsp", "maple syrup", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 289, "n": "Black forest cottage", "pr": "Smoothie", "fl": ["Dessert", "Chocolate", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 310, "p": 29, "c": 43, "f": 4, "ap": ["Thermomix"], "i": [[1, "cup", "skim milk", "D"], [150, "g", "light cottage cheese", "D"], [1, "cup", "frozen cherries", "F"], [1, "tbsp", "cocoa powder", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 290, "n": "Orange creamsicle yoghurt", "pr": "Smoothie", "fl": ["Citrus", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 250, "p": 31, "c": 30, "f": 1, "ap": ["Thermomix"], "i": [[1, "", "orange", "P"], [0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [1, "tsp", "vanilla essence", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 291, "n": "Lemon blueberry yoghurt", "pr": "Smoothie", "fl": ["Citrus", "Berry", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 250, "p": 30, "c": 31, "f": 1, "ap": ["Thermomix"], "i": [[0.5, "cup", "skim milk", "D"], [250, "g", "0% Greek yoghurt", "D"], [0.5, "cup", "frozen blueberries", "F"], [0.5, "", "lemon", "P"], [1, "tsp", "honey", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]},
+{"id": 292, "n": "Mango orange lassi", "pr": "Smoothie", "fl": ["Citrus", "Tropical", "No powder"], "cu": "Smoothie", "b": "Other", "sm": 1, "bs": 1, "t": 5, "fz": 0, "k": 250, "p": 27, "c": 36, "f": 1, "ap": ["Thermomix"], "i": [[1, "", "orange", "P"], [250, "g", "0% Greek yoghurt", "D"], [80, "g", "frozen mango", "F"], [0.25, "tsp", "ground cardamom", "T"]], "s": ["Add everything to the Thermomix (or a blender) with ½–1 cup ice.", "Blend 1 min/speed 10 until smooth. Add a splash more milk if it's too thick.", "Freezer pack: bag the fruit, oats and seeds for each serve. In the morning, tip it in with the yoghurt or cottage cheese and milk, then blend."]}
+);
 /* remove kangaroo */
 for(let j=R.length-1;j>=0;j--) if(R[j].pr==="Kangaroo") R.splice(j,1);
 /* Thermomix / air fryer alternatives for the original 40 */
@@ -845,7 +919,7 @@ for(const r of R){
   if(ALT[r.id]){ r.ap = ALT[r.id][0]; r.alt = ALT[r.id][1]; }
   if(r.id !== 38 && r.id !== 78 && r.i.some(x=>x[2]==="rice (uncooked)") && !r.ap.includes(RC)) r.ap = [...r.ap, RC];
   r.g = GROUP[r.pr] || "veg";
-  if(r.sm){ r.ml = ["Smoothie"]; r.g = "smoothie"; continue; }
+  if(r.sm){ r.ml = ["Smoothie"]; r.g = "smoothie"; r.pw = r.i.some(x=>/protein powder/.test(x[2])); r.df = r.fl.includes("Dairy-free"); continue; }
   if(r.mlx) r.ml = r.mlx;
   else if(r.sn) r.ml = ["Snack"];
   else if(r.cu === "Breakfast") r.ml = ["Breakfast"];
@@ -866,7 +940,7 @@ const byId = Object.fromEntries(R.map(r=>[r.id,r]));
 /* ---------- State ---------- */
 const LS_KEY = "minceprep.v1";
 let S = {favs:[], list:[], checked:{}, custom:[], plan:{}, pantry:[], haveOpt:{staples:true, swaps:true}};
-const ui = {fl:"all", meal:"all", mince:"all", q:"", cu:new Set(), base:new Set(), x:new Set(), ap:new Set(), sort:"num", servings:{}, open:null};
+const ui = {smp:"any", fl:"all", meal:"all", mince:"all", q:"", cu:new Set(), base:new Set(), x:new Set(), ap:new Set(), sort:"num", servings:{}, open:null};
 try{ const raw = localStorage.getItem(LS_KEY); if(raw){ const v = JSON.parse(raw); S = Object.assign(S, v); } }catch(e){}
 
 function sanitize(){
@@ -955,7 +1029,7 @@ function riceTip(r, sv){
   if(r.id === 38 || r.id === 78) return "";
   const rice = r.i.find(x=>x[2]==="rice (uncooked)"); if(!rice) return "";
   const g = rice[0]*sv/4;
-  let t = `<div class="tip"><b>Rice cooker:</b> ${rcCups(g)} rice cooker cups (about ${fmtQty(g,"g")} uncooked) for ${sv} serve${sv>1?"s":""}. Rinse, fill water to the matching line and use the white rice setting. Your 10-cup cooker can do the whole week's rice in one batch.</div>`;
+  let t = `<div class="tip"><b>Rice cooker:</b> ${rcCups(g)} rice cooker cup${g/150>1.01?"s":""} (about ${fmtQty(g,"g")} uncooked) for ${sv} serve${sv>1?"s":""}. Rinse, fill water to the matching line and use the white rice setting. Your 10-cup cooker can do the whole week's rice in one batch.</div>`;
   if(!r.nr) t += `<div class="tip"><b>Thermomix rice:</b> 1200 g water in the bowl, rice in the simmering basket, cook 17–20 min/100°C/speed 4.</div>`;
   return t;
 }
@@ -972,7 +1046,7 @@ function macroBar(r){
 function card(r){
   return `<article class="card" data-m="${r.g}">
     <button class="sr-stretch" data-open="${r.id}" style="all:unset;position:absolute;inset:0;cursor:pointer" aria-label="Open ${esc(r.n)}"></button>
-    <div class="meta"><span class="pill">${esc(r.sm ? r.fl[0] : r.pr)}</span><span>#${r.id}</span><span>${r.sm?r.fl.slice(1).join(" · "):r.sn?"Snack":r.ml.join(" · ")}</span>${r.id>=NEW_FROM?'<span style="color:var(--accent);font-weight:700">New</span>':""}</div>
+    <div class="meta"><span class="pill">${esc(r.sm ? r.fl[0] : r.pr)}</span><span>#${r.id}</span><span>${r.sm?r.fl.slice(1).filter(f=>f!=="No powder"&&f!=="Dairy-free").join(" · "):r.sn?"Snack":r.ml.join(" · ")}</span>${r.sm&&!r.pw?`<span class="tag">No powder</span>`:""}${r.sm&&r.df?`<span class="tag">Dairy-free</span>`:""}${r.id>=NEW_FROM?'<span style="color:var(--accent);font-weight:700">New</span>':""}</div>
     <h3>${esc(r.n)}</h3>
     <div class="meta num"><span><b>${r.k}</b> kcal</span><span><b style="color:var(--p)">${r.p} g</b> protein</span><span>${r.c} g carbs</span><span>${r.f} g fat</span></div>
     ${macroBar(r)}
@@ -987,6 +1061,9 @@ function filtered(src, smMode){
   let out = src.filter(r=>{
     if(smMode){
       if(ui.fl !== "all" && !r.fl.includes(ui.fl)) return false;
+      if(ui.smp === "nopw" && r.pw) return false;
+      if(ui.smp === "pw" && !r.pw) return false;
+      if(ui.smp === "df" && !r.df) return false;
       if(q){ const hay = (r.n+" "+r.fl.join(" ")+" "+r.i.map(x=>x[2]).join(" ")).toLowerCase(); if(!q.split(/\s+/).every(w=>hay.includes(w))) return false; }
       return true;
     }
@@ -1038,10 +1115,10 @@ function render(){
   } else {
     const favs = tab === "favourites", smt = tab === "smoothies";
     $("#viewTitle").textContent = favs ? "Favourites" : smt ? "Smoothies" : "Recipes";
-    $("#viewSub").textContent = favs ? "" : smt ? "26–43 g protein · 215–450 kcal" : "Meals 400–500 kcal · snacks 125–340";
+    $("#viewSub").textContent = favs ? "" : smt ? (()=>{ const s = R.filter(r=>r.sm); return `${Math.min(...s.map(r=>r.p))}–${Math.max(...s.map(r=>r.p))} g protein · ${Math.min(...s.map(r=>r.k))}–${Math.max(...s.map(r=>r.k))} kcal`; })() : "Meals 400–500 kcal · snacks 125–340";
     ["#mealChips","#minceChips","#filterBtn"].forEach(s=>$(s).hidden = smt);
     if(smt) $("#filters").hidden = true;
-    $("#smChips").hidden = !smt;
+    $("#smChips").hidden = !smt; $("#smpChips").hidden = !smt;
     const src = favs ? R.filter(r=>isFav(r.id)) : smt ? R.filter(r=>r.sm) : R.filter(r=>!r.sm);
     const list = filtered(src, smt);
     const fc = filterCount();
@@ -1079,6 +1156,7 @@ function openRecipe(id){
   setTimeout(()=>{ const b = $("#closeSheet"); b && b.focus(); }, 0);
 }
 function closeRecipe(){
+  try{ if(/^#r-\d+$/.test(location.hash)) history.replaceState(null, "", location.pathname + location.search + "#recipes"); }catch(e){}
   ui.open = null; $("#sheet").hidden = true; $("#cta").hidden = true; if(!ui.have) document.body.style.overflow = "";
   render();
 }
@@ -1088,7 +1166,7 @@ function renderSheet(){
   $("#sheetBody").innerHTML = `
     <div class="bar-top">
       <button class="iconbtn" id="closeSheet" aria-label="Back to recipes"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
-      <button class="iconbtn" data-fav="${r.id}" aria-pressed="${isFav(r.id)}" aria-label="${isFav(r.id)?"Remove from":"Add to"} favourites">${heart(isFav(r.id))}</button>
+      <div style="display:flex;gap:8px"><button class="iconbtn" id="shareBtn" aria-label="Share recipe"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg></button><button class="iconbtn" data-fav="${r.id}" aria-pressed="${isFav(r.id)}" aria-label="${isFav(r.id)?"Remove from":"Add to"} favourites">${heart(isFav(r.id))}</button></div>
     </div>
     <div class="hero">
       <div class="meta"><span class="pill" style="--stripe:var(--${r.g})">${esc(r.sm ? r.fl.join(" · ") : r.pr)}</span><span>#${r.id}</span><span>${r.cu}</span><span>${fmtTime(r.t)}</span>${r.ap.map(a=>`<span class="tag">${a}</span>`).join("")}${r.sm?"<span>Thermomix or any blender</span>":r.fz?`<span style="display:inline-flex;gap:4px;align-items:center">${snow} Freezes 3 months</span>`:"<span>Best eaten within 3 days</span>"}</div>
@@ -1129,6 +1207,16 @@ function renderSheet(){
       ${r.tip?`<div class="tip">${esc(r.tip)}</div>`:""}
       ${r.alt?`<div class="tip">${esc(r.alt)}</div>`:""}
       ${riceTip(r, sv)}
+    </section>
+    <section class="block">
+      <h3>Copy and export</h3>
+      <p class="count" style="margin:0">Uses the servings you've set above (${sv}).</p>
+      <div class="exrow">
+        <button class="btn" id="shareBtn2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" width="18" height="18" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button>
+        <button class="btn" id="copyRecipe"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="8" y="8" width="13" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg> Copy recipe</button>
+        <button class="btn" id="copyMacros">Copy macros only</button>
+        <button class="btn" id="pdfBtn"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Download PDF</button>
+      </div>
     </section>
     <section class="block" style="border-bottom:0">
       <h3>Storing</h3>
@@ -1339,32 +1427,79 @@ function planView(){
 
 /* ---------- Picker (add to plan / prep) ---------- */
 function openPicker(mode, k, s){
-  ui.pick = {mode, k, s, q:"", fav:false};
+  ui.pick = {mode, k, s, q:"", fav:false, pr:"all", cu:new Set(), ap:new Set(), x:new Set(), sort:"num", more:false};
   renderPicker(); $("#picker").hidden = false; document.body.style.overflow = "hidden";
-  setTimeout(()=>{ const i = $("#pickQ"); i && i.focus(); }, 0);
 }
 function closePicker(){ ui.pick = null; $("#picker").hidden = true; if(!ui.open && !ui.cook) document.body.style.overflow = ""; }
+function pickBase(){ const p = ui.pick; return p.mode === "plan" ? R.filter(r=>slotFits(r, p.s)) : R.filter(r=>!r.sm); }
 function pickSource(){
   const p = ui.pick, q = p.q.trim().toLowerCase();
-  let src = p.mode === "plan" ? R.filter(r=>slotFits(r, p.s)) : R.filter(r=>!r.sm);
-  if(p.fav) src = src.filter(r=>isFav(r.id));
-  if(q) src = src.filter(r=>q.split(/\s+/).every(w=>(r.n+" "+r.pr+" "+(r.fl||[]).join(" ")+" "+r.i.map(x=>x[2]).join(" ")).toLowerCase().includes(w)));
-  return src.sort((a,b)=>(isFav(b.id)-isFav(a.id)) || a.id-b.id);
+  let src = pickBase().filter(r=>{
+    if(p.fav && !isFav(r.id)) return false;
+    if(p.pr !== "all" && (p.pr === "Smoothies" ? !r.sm : r.pr !== p.pr)) return false;
+    if(p.cu.size && !p.cu.has(r.cu)) return false;
+    if(p.ap.size && !((p.ap.has("none") && !r.ap.length) || r.ap.some(a=>p.ap.has(a)))) return false;
+    if(p.x.has("fz") && !r.fz) return false;
+    if(p.x.has("u30") && r.t > 30) return false;
+    if(p.x.has("p45") && r.p < 45) return false;
+    if(p.x.has("k450") && r.k >= 450) return false;
+    if(p.x.has("new") && r.id < NEW_FROM) return false;
+    if(q && !q.split(/\s+/).every(w=>(r.n+" "+r.pr+" "+r.cu+" "+(r.fl||[]).join(" ")+" "+r.ap.join(" ")+" "+r.i.map(x=>x[2]).join(" ")).toLowerCase().includes(w))) return false;
+    return true;
+  });
+  const s = p.sort;
+  if(s==="protein") src.sort((a,b)=>b.p-a.p);
+  else if(s==="kcal") src.sort((a,b)=>a.k-b.k);
+  else if(s==="time") src.sort((a,b)=>a.t-b.t);
+  else if(s==="ratio") src.sort((a,b)=>b.p/b.k-a.p/a.k);
+  else src.sort((a,b)=>(isFav(b.id)-isFav(a.id)) || a.id-b.id);
+  return src;
 }
+function pickCount(){ const p = ui.pick; return p.cu.size + p.ap.size + p.x.size + (p.sort!=="num"?1:0); }
 function renderPickList(){
-  const list = pickSource();
-  $("#pickList").innerHTML = list.length ? list.map(r=>`<button class="pick" data-pick="${r.id}"><span class="pill" style="--stripe:var(--${r.g})">${esc(r.sm?r.fl[0]:r.pr)}</span><span class="pk-n">${isFav(r.id)?"♥ ":""}${esc(r.n)}</span><small class="num">${r.k} kcal · ${r.p} g protein</small></button>`).join("") : `<p class="count">No matches.</p>`;
+  const list = pickSource(), base = pickBase().length, n = pickCount();
+  $("#pickCount").textContent = `${list.length} of ${base} options`;
+  const b = $("#pickMoreN"); b.hidden = !n; b.textContent = n;
+  $("#pickList").innerHTML = list.length ? list.map(r=>`<button class="pick" data-pick="${r.id}"><span class="pill" style="--stripe:var(--${r.g})">${esc(r.sm?r.fl[0]:r.pr)}</span><span class="pk-n">${isFav(r.id)?"♥ ":""}${esc(r.n)}</span><small class="num">${r.k} kcal · ${r.p} g protein · ${fmtTime(r.t)}${r.ap.length?" · "+r.ap.join(", "):""}</small></button>`).join("") : `<div class="empty"><h3>No matches</h3><p>Try fewer filters.</p><button class="btn" id="pickReset">Clear filters</button></div>`;
 }
+function pickChips(group, values, isOn){ return values.map(v=>{ const [val,label] = Array.isArray(v) ? v : [v,v]; return `<button class="chip" data-pf="${group}" data-val="${esc(val)}" aria-pressed="${isOn(val)}">${esc(label)}</button>`; }).join(""); }
 function renderPicker(){
-  const p = ui.pick;
+  const p = ui.pick, base = pickBase();
   let title = "Add a recipe to prep day";
   if(p.mode === "plan"){ const [y,m,d] = p.k.split("-").map(Number); const dt = new Date(y,m-1,d); title = `Add to ${DAYS[(dt.getDay()+6)%7]} ${shortDate(dt)} · ${SLOTS.find(x=>x[0]===p.s)[1]}`; }
+  const prs = [["all","All"], ...PROTEINS.filter(x=>base.some(r=>r.pr===x)).map(x=>[x,x])];
+  if(base.some(r=>r.sm)) prs.push(["Smoothies","Smoothies"]);
+  const cus = CUISINES.filter(c=>base.some(r=>r.cu===c));
   $("#pickBody").innerHTML = `
     <div class="bar-top"><h2 id="pickTitle" style="font-size:1.2rem">${title}</h2><button class="iconbtn" id="pickClose" aria-label="Close">${xIcon}</button></div>
-    <div class="search" style="margin:8px 0 10px"><label for="pickQ" class="sr">Search</label><input id="pickQ" type="search" placeholder="Search" autocomplete="off"><button class="chip" id="pickFav" aria-pressed="${p.fav}">♥ Favourites</button></div>
+    <div class="stack" style="gap:10px;margin:8px 0 12px">
+      <div class="search"><label for="pickQ" class="sr">Search</label><input id="pickQ" type="search" placeholder="Search recipes or ingredients" autocomplete="off" value="${esc(p.q)}"><button class="btn" id="pickMore" aria-expanded="${p.more}">Filters <span class="badge" id="pickMoreN" hidden>0</span></button></div>
+      <div class="chips scroll" role="group" aria-label="Protein">${pickChips("pr", prs, v=>p.pr===v)}<button class="chip" id="pickFav" aria-pressed="${p.fav}" style="flex:none">♥ Favourites</button></div>
+      <div class="filters" id="pickFilters" ${p.more?"":"hidden"}>
+        <div class="fgroup"><span>Appliance</span><div class="chips">${pickChips("ap", APPLIANCES, v=>p.ap.has(v))}</div></div>
+        ${cus.length>1?`<div class="fgroup"><span>Cuisine</span><div class="chips">${pickChips("cu", cus, v=>p.cu.has(v))}</div></div>`:""}
+        <div class="fgroup"><span>Quick picks</span><div class="chips">${pickChips("x", QUICK, v=>p.x.has(v))}</div></div>
+        <div class="frow"><label for="pickSort" style="display:flex;gap:8px;align-items:center"><span style="font-size:.85rem;color:var(--muted)">Sort</span>
+          <select id="pickSort">${[["num","Favourites first"],["protein","Most protein"],["kcal","Fewest calories"],["time","Quickest"],["ratio","Best protein per calorie"]].map(([v,l])=>`<option value="${v}" ${p.sort===v?"selected":""}>${l}</option>`).join("")}</select></label>
+          <button class="btn ghost" id="pickReset">Clear filters</button></div>
+      </div>
+      <p class="count num" id="pickCount" style="margin:0"></p>
+    </div>
     <div class="picklist" id="pickList"></div>`;
   renderPickList();
 }
+document.addEventListener("click", e=>{
+  if(!ui.pick) return;
+  const T = e.target, p = ui.pick;
+  if(T.closest("#pickMore")){ p.more = !p.more; $("#pickFilters").hidden = !p.more; $("#pickMore").setAttribute("aria-expanded", p.more); return; }
+  const c = T.closest("[data-pf]");
+  if(c){ const g = c.dataset.pf, v = c.dataset.val;
+    if(g === "pr"){ p.pr = v; document.querySelectorAll('[data-pf="pr"]').forEach(b=>b.setAttribute("aria-pressed", b===c)); }
+    else { const set = p[g]; set.has(v) ? set.delete(v) : set.add(v); c.setAttribute("aria-pressed", set.has(v)); }
+    renderPickList(); return; }
+  if(T.closest("#pickReset")){ p.cu.clear(); p.ap.clear(); p.x.clear(); p.sort = "num"; p.pr = "all"; p.fav = false; p.q = ""; renderPicker(); return; }
+}, true);
+document.addEventListener("change", e=>{ if(ui.pick && e.target.id === "pickSort"){ ui.pick.sort = e.target.value; renderPickList(); } });
 
 /* ---------- Prep-day timeline ---------- */
 const LANES = [["you","You (prep)"],["tm","Thermomix"],["af1","Air fryer 1"],["af2","Air fryer 2"],["stove1","Stovetop 1"],["stove2","Stovetop 2"],["oven","Oven"],["rc","Rice cooker"]];
@@ -1384,12 +1519,12 @@ function classify(text){
 function buildTimeline(sel){
   let riceG = 0; const chains = [];
   for(const [id, serv] of sel){
-    const r = byId[id], k = serv/(r.bs||4), chain = [];
+    const r = byId[id], k = serv/(r.bs||4), chain = [], usedIng = new Set();
     const rice = r.i.find(x=>x[2]==="rice (uncooked)"), useRC = rice && !r.nr && r.id!==38 && r.id!==78;
-    if(useRC) riceG += rice[0]*k;
+    if(useRC){ riceG += rice[0]*k; usedIng.add(r.i.indexOf(rice)); }
     for(let s of r.s){
       if(useRC){ const parts = s.split(/(?<=\.)\s+/); if(/^cook (the )?rice/i.test(parts[0])){ parts.shift(); s = parts.join(" "); if(!s) continue; } }
-      const c = classify(s); chain.push(Object.assign({rid:id, text:s}, c));
+      const c = classify(s); chain.push(Object.assign({rid:id, text:s, amts:stepAmounts(r, s, k, usedIng)}, c));
     }
     chains.push(chain);
   }
@@ -1405,8 +1540,8 @@ function buildTimeline(sel){
       return remain(b) - remain(a); });
     for(const ci of order){
       const task = chains[ci][pos[ci]];
-      if(task.kind === "night" || task.kind === "after"){ out.push({lanes:[], kind:task.kind, rid:task.rid, start:t, end:t, text:task.text}); pos[ci]++; started = true; continue; }
-      if(task.kind === "wait"){ out.push({lanes:[], kind:"wait", rid:task.rid, start:t, end:t+task.dur, text:task.text}); pos[ci]++; ready[ci] = t+task.dur; started = true; continue; }
+      if(task.kind === "night" || task.kind === "after"){ out.push({lanes:[], kind:task.kind, rid:task.rid, start:t, end:t, text:task.text, amts:task.amts}); pos[ci]++; started = true; continue; }
+      if(task.kind === "wait"){ out.push({lanes:[], kind:"wait", rid:task.rid, start:t, end:t+task.dur, text:task.text, amts:task.amts}); pos[ci]++; ready[ci] = t+task.dur; started = true; continue; }
       let lanes = null;
       if(task.kind === "prep") lanes = free.you <= t ? ["you"] : null;
       else if(task.kind === "tm") lanes = free.tm <= t ? ["tm"] : null;
@@ -1416,14 +1551,14 @@ function buildTimeline(sel){
       if(!lanes) continue;
       const end = t + task.dur;
       lanes.forEach(l=>free[l] = end + (l==="tm" ? 2 : 0));
-      out.push({lanes, kind:task.kind, rid:task.rid, start:t, end, text:task.text});
+      out.push({lanes, kind:task.kind, rid:task.rid, start:t, end, text:task.text, amts:task.amts});
       pos[ci]++; ready[ci] = end; started = true;
     }
     if(!started){ const c = [...Object.values(free), ...ready].filter(x=>x > t); t = c.length ? Math.min(...c) : t+1; }
   }
   const last = Math.max(0, ...out.map(o=>o.end), free.rc), st = Math.max(last, free.you);
   out.push({lanes:["you"], kind:"prep", rid:0, start:st, end:st+15, text:"Cool, portion into containers and label. Into the fridge or freezer within 2 hours of cooking."});
-  return {out, total:st+15, ids:sel.map(x=>x[0])};
+  return {out, total:st+15, ids:sel.map(x=>x[0]), serv:Object.fromEntries(sel)};
 }
 function clockAt(min){ const [h,m] = (ui.prepStart||"09:00").split(":").map(Number); const t = h*60+m+min; const hh = Math.floor(t/60)%24, mm = t%60; const ap = hh>=12?"pm":"am"; return `${(hh%12)||12}:${String(mm).padStart(2,"0")}${ap}`; }
 function prepCands(){
@@ -1440,12 +1575,21 @@ function timelineHtml(tl){
     <div class="g-axis"><span></span><div class="g-track">${ticks.map(m=>`<i style="left:${m/T*100}%">${clockAt(m)}</i>`).join("")}</div></div>
     ${used.map(([l,lab])=>`<div class="g-row"><span>${lab}</span><div class="g-track">${ticks.map(m=>`<b class="g-grid" style="left:${m/T*100}%"></b>`).join("")}${tl.out.filter(o=>o.lanes.includes(l)).map(o=>`<em style="left:${o.start/T*100}%;width:${Math.max(.8,(o.end-o.start)/T*100)}%;background:${colorOf(o.rid)}" title="${esc(o.rid?byId[o.rid].n:"")}">${o.rid?"#"+o.rid:""}</em>`).join("")}</div></div>`).join("")}
   </div>
-  <div class="legend">${tl.ids.map(id=>`<span><i style="background:${colorOf(id)}"></i>#${id} ${esc(byId[id].n)}</span>`).join("")}</div>`;
+  <div class="legend">${tl.ids.map(id=>`<button class="lg" data-openserv="${id}|${tl.serv[id]}"><i style="background:${colorOf(id)}"></i>#${id} ${esc(byId[id].n)}</button>`).join("")}</div>`;
+  const cookList = `<h3 class="tl-h">What to cook</h3>
+    <p class="count" style="margin:0 0 6px">Tap a recipe to see the amounts for the serves you picked.</p>
+    <div class="cooklist">${tl.ids.map(id=>{ const r = byId[id], sv = tl.serv[id], k = sv/(r.bs||4);
+      return `<details class="ckr"><summary><i style="background:${colorOf(id)}"></i><span><b>#${id} ${esc(r.n)}</b><small class="num">${sv} serve${sv>1?"s":""} · ${r.k} kcal · ${r.p} g protein per serve</small></span></summary>
+        <ul class="ing">${r.i.map(x=>`<li><span class="q">${x[0]==null?"":fmtQty(x[0]*k,x[1])}</span><span>${esc(x[2])}</span></li>`).join("")}</ul>
+        <button class="btn" data-openserv="${id}|${sv}">Open full recipe (${sv} serve${sv>1?"s":""})</button></details>`; }).join("")}</div>`;
   const night = tl.out.filter(o=>o.kind==="night");
   const steps = tl.out.filter(o=>o.kind!=="night").sort((a,b)=>a.start-b.start || (a.rid-b.rid));
   const laneName = o => o.kind==="wait" ? "Wait" : o.kind==="after" ? "Then" : o.lanes.map(l=>LANES.find(x=>x[0]===l)[1]).join(" + ");
-  const row = o => `<li><span class="tl-time num">${o.kind==="night"?"Night before":clockAt(o.start)}</span><div><span class="tl-lane" style="--c:${colorOf(o.rid)}">${laneName(o)}${o.end>o.start?` · ${minLabel(o.end-o.start)}`:""}</span>${o.rid?`<b>#${o.rid} ${esc(byId[o.rid].n)}</b>`:""}<p>${esc(o.text)}</p></div></li>`;
+  const row = o => `<li><span class="tl-time num">${o.kind==="night"?"Night before":clockAt(o.start)}</span><div><span class="tl-lane" style="--c:${colorOf(o.rid)}">${laneName(o)}${o.end>o.start?` · ${minLabel(o.end-o.start)}`:""}</span>${o.rid?`<button class="tl-rec" data-openserv="${o.rid}|${tl.serv[o.rid]}">#${o.rid} ${esc(byId[o.rid].n)} ›</button>`:""}<p>${esc(o.text)}</p>${o.amts && o.amts.length ? `<p class="amts"><b>Use:</b> ${o.amts.map(esc).join(" · ")}</p>` : ""}</div></li>`;
   return `<div class="tl-sum"><b class="num">About ${minLabel(tl.total)}</b> · start ${clockAt(0)}, finish around ${clockAt(tl.total)}</div>
+    <div class="exrow"><button class="btn" id="prepPdf"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3v12M7 10l5 5 5-5M5 21h14"/></svg> Save PDF</button><button class="btn" id="prepShare"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 15V3M7 8l5-5 5 5"/><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-7"/></svg> Share</button></div>
+    ${cookList}
+    <h3 class="tl-h">Timeline</h3>
     ${gantt}
     ${night.length?`<h3 class="tl-h">The night before</h3><ol class="tl">${night.map(row).join("")}</ol>`:""}
     <h3 class="tl-h">Step by step</h3><ol class="tl">${steps.map(row).join("")}</ol>
@@ -1483,8 +1627,16 @@ buildChips($("#baseChips"), BASES, ui.base);
 buildChips($("#xChips"), QUICK, ui.x);
 buildChips($("#apChips"), APPLIANCES, ui.ap);
 $("#mealChips").innerHTML = MEALS.map(([v,l])=>`<button class="chip meal" data-meal="${v}" aria-pressed="${v==="all"}">${l} <span class="num" style="opacity:.6">${v==="all"?R.filter(r=>!r.sm).length:R.filter(r=>r.ml.includes(v)).length}</span></button>`).join("");
-const FLAVOURS = ["Berry","Chocolate","Coffee","Tropical","Green","Nutty","Citrus","Breakfast","Dessert","No powder","Dairy-free"];
+const FLAVOURS = ["Berry","Chocolate","Coffee","Tropical","Green","Nutty","Citrus","Breakfast","Dessert"];
+const SM_PROT = [["any","Any protein"],["nopw","No protein powder"],["pw","With protein powder"],["df","Dairy-free"]];
 $("#smChips").innerHTML = [["all","All"],...FLAVOURS.map(f=>[f,f])].map(([v,l])=>`<button class="chip" data-fl="${esc(v)}" aria-pressed="${v==="all"}">${esc(l)} <span class="num" style="opacity:.6">${v==="all"?R.filter(r=>r.sm).length:R.filter(r=>r.sm&&r.fl.includes(v)).length}</span></button>`).join("");
+$("#smpChips").innerHTML = SM_PROT.map(([v,l])=>`<button class="chip" data-smp="${v}" aria-pressed="${v==="any"}">${l} <span class="num" style="opacity:.6">${R.filter(r=>r.sm && (v==="any" || (v==="nopw" && !r.pw) || (v==="pw" && r.pw) || (v==="df" && r.df))).length}</span></button>`).join("");
+$("#smpChips").addEventListener("click", e=>{
+  const b = e.target.closest(".chip"); if(!b) return;
+  ui.smp = b.dataset.smp;
+  document.querySelectorAll("#smpChips .chip").forEach(c=>c.setAttribute("aria-pressed", c===b));
+  render();
+});
 $("#smChips").addEventListener("click", e=>{
   const b = e.target.closest(".chip"); if(!b) return;
   ui.fl = b.dataset.fl;
@@ -1753,7 +1905,239 @@ document.addEventListener("change", e=>{
   if(e.target.id === "haveSwaps"){ haveOpts().swaps = e.target.checked; persist(); renderHaveParts(); }
 });
 
+/* ---------- Copy for Coach Vault + PDF ---------- */
+function recipeText(r, sv, macrosOnly){
+  const k = sv/(r.bs||4);
+  const macro = `Per serve: ${r.k} kcal | Protein ${r.p} g | Carbs ${r.c} g | Fat ${r.f} g`;
+  if(macrosOnly) return `${r.n}\n${macro}\nServes ${sv} | Total: ${r.k*sv} kcal | Protein ${r.p*sv} g | Carbs ${r.c*sv} g | Fat ${r.f*sv} g`;
+  const lines = [r.n, `Serves ${sv} | ${fmtTime(r.t)}`, macro, "", `Ingredients (${sv} serve${sv>1?"s":""})`,
+    ...r.i.map(x=>"- " + (x[0]==null ? "" : fmtQty(x[0]*k, x[1]) + " ") + x[2]), "", "Method", ...r.s.map((s,i)=>`${i+1}. ${s}`)];
+  if(r.tip) lines.push("", "Tip: " + r.tip);
+  if(r.alt) lines.push("", r.alt);
+  return lines.join("\n");
+}
+function showCopyBox(txt){
+  const m = $("#copybox");
+  m.innerHTML = `<div class="cb-card" role="dialog" aria-modal="true" aria-labelledby="cbTitle"><div class="frow"><h3 id="cbTitle">Copy this text</h3><button class="iconbtn sm" id="cbClose" aria-label="Close">${xIcon}</button></div>
+    <p class="count" style="margin:0">Your browser blocked automatic copying. Tap in the box, select all, then copy.</p>
+    <label for="cbText" class="sr">Recipe text</label><textarea id="cbText" readonly>${esc(txt)}</textarea></div>`;
+  m.hidden = false;
+  const t = $("#cbText"); setTimeout(()=>{ t.focus(); t.select(); }, 30);
+}
+function copyText(txt, what){
+  const p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(txt) : Promise.reject();
+  p.then(()=>toast(`${what} copied. Paste it into Coach Vault.`)).catch(()=>showCopyBox(txt));
+}
+let jsPdfP = null;
+function loadJsPDF(){
+  if(window.jspdf) return Promise.resolve(window.jspdf);
+  if(!jsPdfP) jsPdfP = new Promise((res, rej)=>{ const s = document.createElement("script"); s.src = "https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"; s.onload = ()=>res(window.jspdf); s.onerror = ()=>{ jsPdfP = null; rej(new Error("load")); }; document.head.appendChild(s); });
+  return jsPdfP;
+}
+const pdfSafe = s => String(s).replace(/⅓/g,"1/3").replace(/⅔/g,"2/3").replace(/−/g,"-").replace(/[^\x00-\xFF–—‘’“”•…]/g,"");
+async function makePdf(r, sv){
+  const {jsPDF} = await loadJsPDF();
+  const doc = new jsPDF({unit:"mm", format:"a4"}), W = 210, M = 18, CW = W - 2*M, k = sv/(r.bs||4);
+  let y = 22;
+  const ink = [23,33,27], mute = [91,105,96], green = [31,122,77];
+  const ensure = h => { if(y + h > 280){ doc.addPage(); y = 20; } };
+  const para = (txt, size, style, color, gap, x = M, w = CW) => {
+    doc.setFont("helvetica", style); doc.setFontSize(size); doc.setTextColor(...color);
+    for(const l of doc.splitTextToSize(pdfSafe(txt), w)){ ensure(size*0.42); doc.text(l, x, y); y += size*0.42; }
+    y += gap;
+  };
+  const heading = t => { ensure(14); y += 2; doc.setFont("helvetica","bold"); doc.setFontSize(13); doc.setTextColor(...green); doc.text(pdfSafe(t), M, y); y += 2; doc.setDrawColor(221,227,217); doc.line(M, y, W-M, y); y += 6; };
+  doc.setFillColor(...green); doc.rect(0, 0, W, 7, "F");
+  para(r.n, 20, "bold", ink, 2);
+  para(`${r.sm ? "Smoothie" : r.pr} · ${r.cu} · ${fmtTime(r.t)} · Serves ${sv}${r.ap.length ? " · " + r.ap.join(", ") : ""}`, 10, "normal", mute, 4);
+  ensure(24);
+  const bw = (CW - 9)/4;
+  [["kcal", r.k, ""], ["Protein", r.p, " g"], ["Carbs", r.c, " g"], ["Fat", r.f, " g"]].forEach(([l,v,u],i)=>{
+    const x = M + i*(bw+3); doc.setFillColor(226,240,231); doc.roundedRect(x, y, bw, 18, 2, 2, "F");
+    doc.setFont("helvetica","bold"); doc.setFontSize(15); doc.setTextColor(...ink); doc.text(`${v}${u}`, x + bw/2, y + 9, {align:"center"});
+    doc.setFont("helvetica","normal"); doc.setFontSize(7.5); doc.setTextColor(...mute); doc.text(`${l.toUpperCase()} PER SERVE`, x + bw/2, y + 14.5, {align:"center"});
+  });
+  y += 22;
+  para(`Batch total for ${sv} serve${sv>1?"s":""}: ${r.k*sv} kcal · ${r.p*sv} g protein · ${r.c*sv} g carbs · ${r.f*sv} g fat`, 9, "normal", mute, 2);
+  heading(`Ingredients (${sv} serve${sv>1?"s":""})`);
+  for(const x of r.i){
+    const q = x[0]==null ? "" : fmtQty(x[0]*k, x[1]);
+    doc.setFontSize(10.5); const lines = doc.splitTextToSize(pdfSafe(x[2] + (x[0]==null ? " (to cook)" : "")), CW - 34);
+    ensure(lines.length*4.6 + 1.5);
+    doc.setFont("helvetica","bold"); doc.setTextColor(...ink); doc.text(pdfSafe(q), M, y);
+    doc.setFont("helvetica","normal"); lines.forEach((l,i)=>doc.text(l, M + 34, y + i*4.6));
+    y += lines.length*4.6 + 1.5;
+  }
+  heading("Method");
+  r.s.forEach((s,i)=>{
+    doc.setFontSize(10.5); const lines = doc.splitTextToSize(pdfSafe(s), CW - 9);
+    ensure(lines.length*4.6 + 2.5);
+    doc.setFont("helvetica","bold"); doc.setTextColor(...green); doc.text(String(i+1), M, y);
+    doc.setFont("helvetica","normal"); doc.setTextColor(...ink); lines.forEach((l,j)=>doc.text(l, M + 9, y + j*4.6));
+    y += lines.length*4.6 + 2.5;
+  });
+  const notes = [r.tip, r.alt].filter(Boolean);
+  if(notes.length){ heading("Tips"); notes.forEach(n=>para(n, 10, "normal", ink, 2)); }
+  heading("Storing");
+  para(r.sm ? "Best blended fresh. Blend the night before and keep sealed in the fridge for up to 24 hours. Freezer packs keep 3 months."
+    : `Fridge up to 4 days in airtight containers.${r.fz ? " Freezes up to 3 months." : ""}${r.sn ? "" : " Reheat until piping hot."}`, 10, "normal", ink, 2);
+  const pages = doc.getNumberOfPages();
+  for(let i=1;i<=pages;i++){ doc.setPage(i); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(...mute);
+    doc.text("High-Protein Meal Prep · macros are estimates", M, 290); doc.text(`${i} / ${pages}`, W - M, 290, {align:"right"}); }
+  return doc.output("blob");
+}
+async function savePdf(r, sv){
+  toast("Making your PDF…");
+  let blob;
+  try{ blob = await makePdf(r, sv); }catch(e){ toast("Couldn't create the PDF. Check your connection and try again."); return; }
+  const filename = r.n.replace(/[^\w\s-]/g,"").trim().replace(/\s+/g,"-").toLowerCase() + ".pdf";
+  let dl = null;
+  try{ if(window.claude && claude.use) dl = await claude.use("downloads"); }catch(e){}
+  if(dl){
+    try{ await dl.save({filename, data:blob}); toast("PDF saved"); }
+    catch(e){ if(e && (e.code === "declined" || e.code === "rate_limited")) return; toast("Downloads aren't available in this view"); }
+    return;
+  }
+  const url = URL.createObjectURL(blob), a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 10000);
+}
+document.addEventListener("click", e=>{
+  const T = e.target;
+  if(T.closest("#copyRecipe")){ const r = byId[ui.open]; copyText(recipeText(r, ui.servings[r.id]), "Recipe"); return; }
+  if(T.closest("#copyMacros")){ const r = byId[ui.open]; copyText(recipeText(r, ui.servings[r.id], true), "Macros"); return; }
+  if(T.closest("#pdfBtn")){ const r = byId[ui.open]; savePdf(r, ui.servings[r.id]); return; }
+  if(T.closest("#cbClose") || T.id === "copybox"){ $("#copybox").hidden = true; return; }
+  const os = T.closest("[data-openserv]"); if(os){ e.stopPropagation(); const [id, sv] = os.dataset.openserv.split("|").map(Number); ui.servings[id] = sv; openRecipe(id); return; }
+}, true);
+
+
+/* ---------- Share ---------- */
+const inClaude = () => !!(window.claude && claude.use);
+function recipeLink(id){ return inClaude() ? "" : location.origin + location.pathname + "#r-" + id; }
+async function shareRecipe(r, sv){
+  const link = recipeLink(r.id);
+  const text = recipeText(r, sv) + (link ? "\n\nOpen in the app: " + link : "");
+  if(navigator.share && !inClaude()){
+    try{ await navigator.share({title: r.n, text}); return; }
+    catch(e){ if(e && e.name === "AbortError") return; }
+  }
+  const p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject();
+  p.then(()=>toast("Recipe copied. Paste it into a message, email or app.")).catch(()=>showCopyBox(text));
+}
+function routeRecipe(){ const m = location.hash.match(/^#r-(\d+)$/); if(m && byId[+m[1]] && ui.open !== +m[1]) openRecipe(+m[1]); }
+document.addEventListener("click", e=>{
+  if(e.target.closest("#shareBtn") || e.target.closest("#shareBtn2")){ const r = byId[ui.open]; if(r) shareRecipe(r, ui.servings[r.id]); }
+}, true);
+window.addEventListener("hashchange", routeRecipe);
+
+/* ---------- Prep day: amounts per step, PDF, share ---------- */
+const ING_STOP = new Set("light lean salt reduced frozen fresh small large baby dried ground grated shaved trimmed uncooked fillets fillet mix sticks cloves sauce powder paste seeds leg diced sliced whole plain extra firm medjool lebanese wholemeal wholegrain unsweetened vegetarian sheets shelled dry roasted sweet brown the and".split(" "));
+function ingWords(name){ return name.toLowerCase().replace(/\(.*?\)/g," ").replace(/[^a-z ]+/g," ").split(/\s+/).filter(w=>w.length>=3 && !ING_STOP.has(w)); }
+function mentions(text, w){
+  const c = [...new Set([w, w.replace(/es$/,""), w.replace(/s$/,"")])].filter(Boolean).map(x=>x.replace(/[^a-z]/g,""));
+  return new RegExp("\\b(?:" + c.join("|") + ")(?:s|es)?\\b", "i").test(text);
+}
+function stepAmounts(r, text, k, used){
+  const out = [];
+  r.i.forEach((x,ix)=>{ if(used.has(ix)) return; const ws = ingWords(x[2]); if(!ws.length) return;
+    if(ws.some(w=>mentions(text, w))){ used.add(ix); out.push((x[0]==null ? "" : fmtQty(x[0]*k, x[1]) + " ") + x[2]); } });
+  return out;
+}
+const hexRgb = h => [1,3,5].map(i=>parseInt(h.slice(i,i+2),16));
+function prepSorted(tl){ return { night: tl.out.filter(o=>o.kind==="night"), steps: tl.out.filter(o=>o.kind!=="night").sort((a,b)=>a.start-b.start || (a.rid-b.rid)) }; }
+const laneNameOf = o => o.kind==="wait" ? "Wait" : o.kind==="after" ? "Then" : o.lanes.map(l=>LANES.find(x=>x[0]===l)[1]).join(" + ");
+function prepText(tl){
+  const {night, steps} = prepSorted(tl);
+  const L = [`PREP DAY PLAN`, `Start ${clockAt(0)} · about ${minLabel(tl.total)} · finish around ${clockAt(tl.total)}`, "", "WHAT TO COOK"];
+  for(const id of tl.ids){ const r = byId[id], sv = tl.serv[id], k = sv/(r.bs||4);
+    L.push("", `#${id} ${r.n} (${sv} serve${sv>1?"s":""}, ${r.k} kcal / ${r.p} g protein per serve)`, ...r.i.map(x=>"- " + (x[0]==null ? "" : fmtQty(x[0]*k,x[1]) + " ") + x[2])); }
+  const line = o => [`${o.kind==="night" ? "Night before" : clockAt(o.start)} · ${laneNameOf(o)}${o.end>o.start ? " · " + minLabel(o.end-o.start) : ""}${o.rid ? " · #" + o.rid + " " + byId[o.rid].n : ""}`, `   ${o.text}`, ...(o.amts && o.amts.length ? [`   Use: ${o.amts.join(", ")}`] : [])];
+  if(night.length){ L.push("", "THE NIGHT BEFORE"); night.forEach(o=>L.push(...line(o))); }
+  L.push("", "STEP BY STEP"); steps.forEach(o=>L.push(...line(o), ""));
+  return L.join("\n");
+}
+async function makePrepPdf(tl){
+  const {jsPDF} = await loadJsPDF();
+  const doc = new jsPDF({unit:"mm", format:"a4"}), W = 210, M = 15, CW = W - 2*M;
+  const ink = [23,33,27], mute = [91,105,96], green = [31,122,77];
+  let y = 20;
+  const ensure = h => { if(y + h > 282){ doc.addPage(); y = 18; } };
+  const txt = (t, x, size, style, color, w) => { doc.setFont("helvetica", style); doc.setFontSize(size); doc.setTextColor(...color); const ls = doc.splitTextToSize(pdfSafe(t), w); ls.forEach((l,i)=>doc.text(l, x, y + i*size*0.42)); return ls.length*size*0.42; };
+  const heading = t => { ensure(14); y += 3; doc.setFont("helvetica","bold"); doc.setFontSize(13); doc.setTextColor(...green); doc.text(t, M, y); y += 2; doc.setDrawColor(221,227,217); doc.line(M, y, W-M, y); y += 6; };
+  const colorOf = rid => rid ? hexRgb(COLORS[tl.ids.indexOf(rid) % COLORS.length]) : mute;
+  doc.setFillColor(...green); doc.rect(0, 0, W, 7, "F");
+  y += txt("Prep day plan", M, 20, "bold", ink, CW) + 2;
+  y += txt(`Start ${clockAt(0)} · about ${minLabel(tl.total)} · finish around ${clockAt(tl.total)} · ${tl.ids.length} recipes`, M, 10, "normal", mute, CW) + 3;
+  heading("What to cook");
+  for(const id of tl.ids){
+    const r = byId[id], sv = tl.serv[id], k = sv/(r.bs||4);
+    const items = r.i.map(x=>[x[0]==null ? "" : fmtQty(x[0]*k, x[1]), x[2]]);
+    const rows = Math.ceil(items.length/2);
+    ensure(10 + rows*4.4);
+    doc.setFillColor(...colorOf(id)); doc.rect(M, y-3.5, 2.2, 5, "F");
+    y += txt(`#${id} ${r.n}`, M+4, 11, "bold", ink, CW-60);
+    doc.setFont("helvetica","normal"); doc.setFontSize(9); doc.setTextColor(...mute); doc.text(pdfSafe(`${sv} serve${sv>1?"s":""} · ${r.k} kcal · ${r.p} g protein per serve`), W-M, y - 4.6, {align:"right"});
+    y += 1;
+    const colW = CW/2;
+    items.forEach((it, i)=>{ const col = i < rows ? 0 : 1, row = i < rows ? i : i - rows, x = M + 4 + col*colW, yy = y + row*4.4;
+      doc.setFont("helvetica","bold"); doc.setFontSize(9); doc.setTextColor(...ink); doc.text(pdfSafe(it[0]), x, yy);
+      doc.setFont("helvetica","normal"); doc.text(pdfSafe(doc.splitTextToSize(pdfSafe(it[1]), colW-26)[0]), x+22, yy); });
+    y += rows*4.4 + 3;
+  }
+  heading("Timeline");
+  const used = LANES.filter(([l])=>tl.out.some(o=>o.lanes.includes(l))), T = Math.max(tl.total, 30), lx = M + 26, lw = CW - 26;
+  ensure(8 + used.length*7);
+  doc.setFontSize(7); doc.setTextColor(...mute); doc.setFont("helvetica","normal");
+  for(let m=0; m<=T; m+=30) doc.text(clockAt(m), lx + m/T*lw, y, {align: m===0 ? "left" : "center"});
+  y += 3;
+  for(const [l, lab] of used){
+    doc.setFontSize(8); doc.setTextColor(...mute); doc.text(lab, M, y+4);
+    doc.setFillColor(243,245,240); doc.rect(lx, y, lw, 6, "F");
+    for(const o of tl.out.filter(o=>o.lanes.includes(l))){ const x = lx + o.start/T*lw, w = Math.max(1, (o.end-o.start)/T*lw);
+      doc.setFillColor(...colorOf(o.rid)); doc.roundedRect(x, y+0.6, w, 4.8, 1, 1, "F");
+      if(o.rid && w > 7){ doc.setFontSize(6.5); doc.setTextColor(255,255,255); doc.setFont("helvetica","bold"); doc.text("#"+o.rid, x+1.2, y+4); doc.setFont("helvetica","normal"); } }
+    y += 7;
+  }
+  const {night, steps} = prepSorted(tl);
+  const stepRow = o => {
+    doc.setFontSize(10); const tl1 = doc.splitTextToSize(pdfSafe(o.text), CW-26);
+    doc.setFontSize(9); const am = o.amts && o.amts.length ? doc.splitTextToSize(pdfSafe("Use: " + o.amts.join(", ")), CW-26) : [];
+    const h = 5 + (o.rid ? 4.4 : 0) + tl1.length*4.3 + am.length*4 + 3;
+    ensure(h);
+    doc.setFont("helvetica","bold"); doc.setFontSize(10); doc.setTextColor(...ink); doc.text(o.kind==="night" ? "Night before" : clockAt(o.start), M, y);
+    const x = M + 26; let yy = y;
+    doc.setFontSize(7.5); doc.setTextColor(...colorOf(o.rid)); doc.text(pdfSafe((laneNameOf(o) + (o.end>o.start ? " · " + minLabel(o.end-o.start) : "")).toUpperCase()), x, yy); yy += 4.4;
+    if(o.rid){ doc.setFontSize(10); doc.setTextColor(...ink); doc.text(pdfSafe(`#${o.rid} ${byId[o.rid].n}`), x, yy); yy += 4.4; }
+    doc.setFont("helvetica","normal"); doc.setFontSize(10); doc.setTextColor(...ink); tl1.forEach(l=>{ doc.text(l, x, yy); yy += 4.3; });
+    if(am.length){ doc.setFontSize(9); doc.setTextColor(...green); am.forEach(l=>{ doc.text(l, x, yy); yy += 4; }); }
+    y = yy + 3; doc.setDrawColor(230,234,227); doc.line(M, y-2, W-M, y-2); y += 2;
+  };
+  if(night.length){ heading("The night before"); night.forEach(stepRow); }
+  heading("Step by step"); steps.forEach(stepRow);
+  const pages = doc.getNumberOfPages();
+  for(let i=1;i<=pages;i++){ doc.setPage(i); doc.setFont("helvetica","normal"); doc.setFontSize(8); doc.setTextColor(...mute); doc.text("High-Protein Meal Prep · prep-day timeline (times are estimates)", M, 290); doc.text(`${i} / ${pages}`, W-M, 290, {align:"right"}); }
+  return doc.output("blob");
+}
+async function saveBlob(blob, filename){
+  let dl = null;
+  try{ if(window.claude && claude.use) dl = await claude.use("downloads"); }catch(e){}
+  if(dl){ try{ await dl.save({filename, data:blob}); toast("PDF saved"); }catch(e){ if(e && (e.code==="declined" || e.code==="rate_limited")) return; toast("Downloads aren't available in this view"); } return; }
+  const url = URL.createObjectURL(blob), a = document.createElement("a"); a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove(); setTimeout(()=>URL.revokeObjectURL(url), 10000);
+}
+async function sharePrep(tl){
+  const text = prepText(tl);
+  if(navigator.share && !inClaude()){ try{ await navigator.share({title:"Prep day plan", text}); return; }catch(e){ if(e && e.name === "AbortError") return; } }
+  const p = navigator.clipboard && navigator.clipboard.writeText ? navigator.clipboard.writeText(text) : Promise.reject();
+  p.then(()=>toast("Prep plan copied. Paste it into a message, email or notes.")).catch(()=>showCopyBox(text));
+}
+document.addEventListener("click", async e=>{
+  if(e.target.closest("#prepPdf") && ui.timeline){ toast("Making your PDF…"); let blob; try{ blob = await makePrepPdf(ui.timeline); }catch(err){ toast("Couldn't create the PDF. Check your connection and try again."); return; } saveBlob(blob, `prep-day-${keyOf(new Date())}.pdf`); }
+  if(e.target.closest("#prepShare") && ui.timeline) sharePrep(ui.timeline);
+});
+
 render();
+routeRecipe();
 </script>
 </body>
 </html>
